@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, TouchableOpacity, Platform, TextInput, KeyboardAvoidingView, Image, ScrollView } from 'react-native'
-import React, { useState } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Platform, TextInput, KeyboardAvoidingView, Image, ScrollView, Alert } from 'react-native'
+import React, { useState, useEffect } from 'react';
 import { BlurView } from 'expo-blur';
 import { useNavigation } from '@react-navigation/native';
 import { auth } from '../Firebase';
@@ -11,6 +11,7 @@ const Menu = ({libraryColor, shopColor, createScreenColor, generateScreenColor})
     const [menuHeight, setMenuHeight] = useState(200);
     const [signInUp, setSignInUp] = useState('signIn');
     const [textBtn, setTextBtn] = useState('Sign in')
+    const [userSignedIn, setUserSingdeIn] = useState(false) 
 
     //user infor
     const [email, setEmail] = useState('');
@@ -19,8 +20,12 @@ const Menu = ({libraryColor, shopColor, createScreenColor, generateScreenColor})
     
     //this shows the sign in form
     const EnableSignInForm = () => {
-        settoggleSignInForm(true)
-        setMenuHeight(0);
+        if(userSignedIn){
+            navigation.navigate('UserProfile');
+        }else {
+            settoggleSignInForm(true)
+            setMenuHeight(0);
+        }  
     }
 
     //this hide the sign in form
@@ -33,6 +38,7 @@ const Menu = ({libraryColor, shopColor, createScreenColor, generateScreenColor})
     const createNewUser = () => {
         createUserWithEmailAndPassword(auth, email, pass)
             .then(() => {
+                Alert.alert('Thank you for joining us.')
                 setEmail('')
                 setPass('')
                 DisableSignInForm();
@@ -50,6 +56,7 @@ const Menu = ({libraryColor, shopColor, createScreenColor, generateScreenColor})
     const signInUser = () => {
         signInWithEmailAndPassword(auth, email, pass)
             .then (() => {
+                Alert.alert('You are now logged in.')
                 DisableSignInForm();
                 setTextBtn(auth.currentUser.displayName)
             })
@@ -57,11 +64,17 @@ const Menu = ({libraryColor, shopColor, createScreenColor, generateScreenColor})
     }
 
     //if user is signed in, put the name on the button
-    onAuthStateChanged(auth, (user) => {
-        if(user) {
-            setTextBtn(auth.currentUser.displayName)
-        }
-    })
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+                if(user) {
+                    setUserSingdeIn(true);
+                    setTextBtn(auth.currentUser.displayName)
+                }
+            })
+    },[])
+    
+    
+    
 
   return (
     //because BlurView is not avalible on Andoid i had to build two separat menus
@@ -128,7 +141,7 @@ const Menu = ({libraryColor, shopColor, createScreenColor, generateScreenColor})
                                     </Text>
 
                                     <TouchableOpacity style={styles.signinBtn} onPress={signInUser}>
-                                        <Text style={styles.signinText}>Sign In</Text>
+                                        <Text style={styles.signinText}>{textBtn}</Text>
                                     </TouchableOpacity>
                                 </View>
                             :
@@ -144,6 +157,7 @@ const Menu = ({libraryColor, shopColor, createScreenColor, generateScreenColor})
                                         onChangeText={(text) => setEmail(text)}
                                         style= {styles.input}
                                         placeholder='E-mail'
+                                        secureTextEntry={false}
                                     />
                                     <TextInput
                                         onChangeText={(text) => setPass(text)}
@@ -168,7 +182,7 @@ const Menu = ({libraryColor, shopColor, createScreenColor, generateScreenColor})
                 {!toggleSignInForm &&
                     <View>
                         <TouchableOpacity style={styles.signinBtn} onPress={EnableSignInForm}>
-                            <Text style={styles.signinText}>Sign In</Text>
+                            <Text style={styles.signinText}>{textBtn}</Text>
                         </TouchableOpacity>
                     </View>
                 }
@@ -233,7 +247,7 @@ const Menu = ({libraryColor, shopColor, createScreenColor, generateScreenColor})
                                     </Text>
 
                                     <TouchableOpacity style={styles.signinBtn} onPress={signInUser}>
-                                        <Text style={styles.signinText}>Sign In</Text>
+                                        <Text style={styles.signinText}>{textBtn}</Text>
                                     </TouchableOpacity>
                                 </View>
                             :
@@ -263,7 +277,7 @@ const Menu = ({libraryColor, shopColor, createScreenColor, generateScreenColor})
                                     </Text>
 
                                     <TouchableOpacity style={styles.signinBtn} onPress={createNewUser}>
-                                        <Text style={styles.signinText}>Sign Up</Text>
+                                        <Text style={styles.signinText}>{textBtn}</Text>
                                     </TouchableOpacity>
                                 </View>
                             }

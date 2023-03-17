@@ -15,7 +15,7 @@ const Home = () => {
         <View style={styles.textCont}> 
             <Text style={styles.title}>Storyfy</Text>
             <Text style={styles.description}>
-                StoryGenius is an app that offers personalized stories for children. The app uses AI tools to generate unique stories based on the child's interests and reading level. The stories are interactive, and the child can make choices that influence the outcome. The app includes illustrations, animations, and sound effects to bring the story to life and make it more engaging.
+                Storyfy is an app that offers personalized stories for children. The app uses AI tools to generate unique stories based on the child's interests and reading level. The stories are interactive, and the child can make choices that influence the outcome. The app includes illustrations, animations, and sound effects to bring the story to life and make it more engaging.
             </Text>
         </View>
         

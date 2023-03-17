@@ -13,6 +13,8 @@ import SplashScreenApp from './Screens/SplashScreenApp';
 import Home from './Screens/Home';
 import UserLibrary from './Screens/UserLibrary';
 import Shop from './Screens/Shop';
+import ReadingSpace from './Screens/ReadingSpace';
+import UserProfile from './Screens/UserProfile';
 
 const Stack = createStackNavigator();
 SplashScreen.preventAutoHideAsync();
@@ -44,6 +46,8 @@ export default function App() {
             <Stack.Screen name="Home" options={{headerShown: false, gestureEnabled: false}} component={Home}/>
             <Stack.Screen name="UserLibrary" options={{headerShown: false, gestureEnabled: false}} component={UserLibrary}/>
             <Stack.Screen name="Shop" options={{headerShown: false, gestureEnabled: false}} component={Shop}/>
+            <Stack.Screen name="ReadingSpace" options={{headerShown: false, gestureEnabled: false}} component={ReadingSpace}/>
+            <Stack.Screen name="UserProfile" options={{headerShown: false, gestureEnabled: false}} component={UserProfile}/>
           </Stack.Navigator>
         </NavigationContainer>
       </LibraryProvider>

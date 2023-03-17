@@ -1,16 +1,20 @@
 import React, {createContext, useState} from "react";
 
+//Sories
+import DansulVesel from "./AllStorys/DansulVesel";
+
 const ShopContext = createContext();
 
 export function ShopProvider ({children}) {
     const [shopItemsList, setShopItemsList] = useState([
         {
-            title: 'Test storry',
-            description: 'This is a test story, used to test the functionality of the Aplicattion. This has to be deleted after development.',
-            age: '4+',
+            title: 'Dansul vesel',
+            description: 'O povestioara amuzanta in care animalele se intrec in diferite probe. Dar Vrand sa se distreze aceasta decid sa faca un concurs de dans. Uneori e mai bine sa ne distram in loc sa ne intrecem.',
+            age: '3+',
             price: 0.99,
-            thumbnail: require('./assets/images/testStory.png'),
-            id: 1 
+            thumbnail: require('./stories/DansulVesel/thumbnail.png'),
+            id: 1,
+            story: <DansulVesel/> 
         }
     ]);
 

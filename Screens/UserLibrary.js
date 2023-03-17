@@ -1,12 +1,14 @@
 import { StyleSheet, Text, View, ImageBackground, ScrollView, Image, TouchableOpacity } from 'react-native'
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import Menu from '../Components/Menu';
 import LibraryContext from '../LibraryContext';
 import StoryTitle from '../Components/StoryTitle';
+import { useNavigation } from '@react-navigation/native';
 
 const UserLibrary = () => {
     const { userStories } = useContext(LibraryContext);
     const [selectedItem, setSelectedItem] = useState(null);
+    const navigation = useNavigation();
     let listAnimTimeing = 500
 
 
@@ -15,6 +17,14 @@ const UserLibrary = () => {
     const selectThis = (item) => {
         setSelectedItem(item);
     }
+
+    //i navigate to Reading Space and giving it the id of the story that is pressed
+    //in the Reading Space the story with this id is being searched in Library Context and story is beeing rendered
+    const NavigateToSelectedStory = () => {
+
+        navigation.navigate('ReadingSpace', {storyID: selectedItem})
+    }
+    
   return (
     <View style={styles.body}>
       <ImageBackground
@@ -36,6 +46,7 @@ const UserLibrary = () => {
                             selectThis={selectThis}
                             selectedItem={selectedItem}
                             animationIncrement={listAnimTimeing = listAnimTimeing + 500}
+                            story={story.story}
                         >
                         </StoryTitle>
                     )  
@@ -44,7 +55,7 @@ const UserLibrary = () => {
                 }
             </ScrollView>
 
-            <TouchableOpacity style={styles.readBtn}>
+            <TouchableOpacity style={styles.readBtn} onPress={NavigateToSelectedStory}>
                 <Text style={styles.txtBtn}>Read</Text>
                 <Image 
                 source={require('../assets/images/icons/right-arrow.png')}
