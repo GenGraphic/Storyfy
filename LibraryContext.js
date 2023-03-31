@@ -3,7 +3,6 @@ import React, {createContext, useState} from "react";
 //Sories
 import Ascultarea from './AllStorys/Ascultarea';
 import Minciunica from "./AllStorys/Minciunica";
-import DansulVesel from "./AllStorys/DansulVesel";
 
 const LibraryContext = createContext();
 
@@ -27,20 +26,34 @@ export function  LibraryProvider ({children})  {
             thumbnail: require('./stories/Minciuna/images/1.png'),
             story: <Minciunica/>
         },
-        {
-            name: 'Dansul vesel',
-            description: 'This is a test story, used to test the functionality of the Aplicattion. This has to be deleted after development.',
-            price: 0.99,
-            id: 3,
-            age: '4+',
-            thumbnail: require('./stories/DansulVesel/thumbnail.png'),
-            story: <DansulVesel/>
-        },
-        
     ]);
 
+    const addStory = (name, description, price, age, thumbnail, story) => {
+        //make copy of userStories
+        const newUserStory = userStories;
+
+        //create newStory with variable provided
+        const newStory = {
+            name: name,
+            description: description,
+            price: price,
+            id: userStories.length + 1,
+            age: age,
+            thumbnail: thumbnail,
+            story: story
+        }
+
+        //add the newStory to copy userStories
+        newUserStory.push(newStory);
+
+        //set userStories the copy list
+        setUserStories(newUserStory);
+
+        alert('Thank you for buying from us.')
+    }
+
     return(
-        <LibraryContext.Provider value={{userStories, setUserStories}}>{children}</LibraryContext.Provider>
+        <LibraryContext.Provider value={{userStories, setUserStories, addStory}}>{children}</LibraryContext.Provider>
     )
 }
 

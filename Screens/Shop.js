@@ -8,7 +8,6 @@ const Shop = () => {
   const { shopItemsList } = useContext(ShopContext);
 
   
-
   return (
     <View style={styles.body}>
       <ImageBackground
@@ -30,6 +29,7 @@ const Shop = () => {
                   age={item.age}
                   price={item.price}
                   thumbnail={item.thumbnail}
+                  story={item.story}
                 />
               )
             })

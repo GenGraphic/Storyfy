@@ -1,9 +1,11 @@
-import { StyleSheet, Text, View, TouchableOpacity, Platform, TextInput, KeyboardAvoidingView, Image, ScrollView, Alert } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Platform, TextInput, KeyboardAvoidingView, Image, Alert } from 'react-native'
 import React, { useState, useEffect } from 'react';
 import { BlurView } from 'expo-blur';
 import { useNavigation } from '@react-navigation/native';
 import { auth } from '../Firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, onAuthStateChanged } from 'firebase/auth';
+import { database } from '../Firebase';
+import { ref, set } from 'firebase/database';
 
 const Menu = ({libraryColor, shopColor, createScreenColor, generateScreenColor}) => {
     const navigation = useNavigation();
@@ -18,6 +20,13 @@ const Menu = ({libraryColor, shopColor, createScreenColor, generateScreenColor})
     const [name, setName] = useState('');
     const [pass, setPass] = useState('');
     
+    //create new user in dataBase and asign empty lsit of library
+    const createUserLibrary = (userId) => {
+        set(ref(database, userId), {
+            library: ['Your list is Empty'] 
+        })
+    }
+
     //this shows the sign in form
     const EnableSignInForm = () => {
         if(userSignedIn){
@@ -38,16 +47,20 @@ const Menu = ({libraryColor, shopColor, createScreenColor, generateScreenColor})
     const createNewUser = () => {
         createUserWithEmailAndPassword(auth, email, pass)
             .then(() => {
-                Alert.alert('Thank you for joining us.')
-                setEmail('')
-                setPass('')
-                DisableSignInForm();
-
+                Alert.alert('Thank you for joining us.') //propmt user with alert
+                setEmail('') //empty email field
+                setPass('') //empta password field
+                DisableSignInForm(); //hide login Field
+                
+                //update user name
                 updateProfile(auth.currentUser, {
                     displayName: name
                 }).then(() => {
-                    setTextBtn(auth.currentUser.displayName)
+                    setTextBtn(auth.currentUser.displayName) //if succes, add name to the button
                 }).catch((error) => alert(error))
+
+                //create user Library in database
+                createUserLibrary(auth.currentUser.uid)
             })
             .catch((error) => alert(error));
     }

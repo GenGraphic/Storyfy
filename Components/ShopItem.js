@@ -1,9 +1,12 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
-import React from 'react';
+import React, {useContext} from 'react';
 import InsetShadow from 'react-native-inset-shadow';
+import LibraryContext from '../LibraryContext';
 
 
-const ShopItem = ({title, description, age, price, thumbnail}) => {
+const ShopItem = ({title, description, age, price, thumbnail, story}) => {
+    const { addStory } = useContext(LibraryContext)
+
   return (
     <InsetShadow style={styles.shadow}>
       <View style={styles.body}>
@@ -13,7 +16,10 @@ const ShopItem = ({title, description, age, price, thumbnail}) => {
             <Text style={styles.age}>{age} years</Text>
         </View>
 
-        <TouchableOpacity style={styles.buyBtn}>
+        <TouchableOpacity 
+        style={styles.buyBtn}
+        onPress={() => addStory(title, description, price, age, thumbnail, story)}
+        >
             <Text style={styles.buyTxt}>BUY</Text>
             <Text style={styles.price}>{price}€</Text>
         </TouchableOpacity>
